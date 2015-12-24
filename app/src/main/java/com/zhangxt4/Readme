@@ -1,0 +1,14 @@
+public class DownloadTask {
+    public void downloadFile(){
+        //读取上次下载的信息
+        List<ThreadInfo> threadInfos = mDao.getThread(mFileInfo.getUrl());
+        ThreadInfo threadInfo = null;
+        if(threadInfos.size() == 0){
+            //还没开始下载，创建一个新线程信息
+            threadInfo = new ThreadInfo(0, mFileInfo.getUrl(), 0, mFileInfo.getLength(), 0);
+        }else {
+            threadInfo = threadInfos.get(0);
+        }
+        //创建子线程并开始下载
+        new DownloadThread(threadInfo).start();
+    }
